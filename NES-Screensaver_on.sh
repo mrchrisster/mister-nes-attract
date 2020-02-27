@@ -13,8 +13,16 @@ then
         exit 1
 fi
 
-echo "Backing up Boot Rom"
-cp /media/fat/Games/NES/boot1.rom /media/fat/Games/NES/boot1.rom.bak
+if [ -f /media/fat/Games/NES/boot1.rom.bak ]
+then
+        echo "Backing up Boot Rom:" 
+        echo "Already backed up"
+else
+        echo "Backing up Boot Rom"
+        cp /media/fat/Games/NES/boot1.rom /media/fat/Games/NES/boot1.rom.bak
+
+fi
+
 
 nesrandom()
 {
