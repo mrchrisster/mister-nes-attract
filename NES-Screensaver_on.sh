@@ -16,6 +16,12 @@ fi
 echo "Backing up Boot Rom"
 cp /media/fat/Games/NES/boot1.rom /media/fat/Games/NES/boot1.rom.bak
 
+nesrandom()
+{
+    NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
+    unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
+    fpga /media/fat/_Console/NES*.rbf
+}
 
 mount | grep "on / .*[(,]ro[,$]" -q && RO_ROOT="true"
 [ "$RO_ROOT" == "true" ] && mount / -o remount,rw
@@ -81,4 +87,4 @@ echo "Screensaver is on and"
 echo "will launch a random game"
 echo "every 5 minutes."
 echo "Launching in 5s"
-sleep 5 && fpga /media/fat/_Console/NES*.rbf
+sleep 5 && nesrandom
