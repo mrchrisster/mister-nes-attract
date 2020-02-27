@@ -3,7 +3,7 @@ This is just a quick test to see if I can have a random game start after a prede
 
 # Usage:
 
-Copy nes.txt and nes-random-game.sh to Scripts folder
+Copy NES-Screensaver_on.sh and NES-Screensaver_off.sh to Scripts Directory
 
 Make sure you're using the Everdrive Pack under "/media/fat/Games/NES/@NES{}.zip"
 
