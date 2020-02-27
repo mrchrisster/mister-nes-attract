@@ -18,4 +18,6 @@ echo "Screensaver is off and"
 echo "inactive at startup."
 echo "Done!"
 echo "Rebooting in 5s"
-sleep 5 && reboot
+sync
+sleep 5 && reboot now
+exit 0
