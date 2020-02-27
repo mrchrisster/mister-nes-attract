@@ -8,7 +8,7 @@ fi
 if [ ! -f /media/fat/Games/NES/boot1.rom ]
 then
         echo "Error: Aborting.."
-	echo "Missing file"
+        echo "Missing file"
         echo "/media/fat/Games/NES/boot1.rom"
         exit 1
 fi
@@ -20,6 +20,7 @@ nesrandom()
 {
     NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
     unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
+    echo "$NESrandomrom" > /media/fat/Games/NES/lastplayed.log
     fpga /media/fat/_Console/NES*.rbf
 }
 
@@ -36,19 +37,20 @@ sleepfpga()
     sleep 300
     NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
     unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
+    cat "$NESrandomrom" > /media/fat/Games/NES/lastplayed.log
     fpga /media/fat/_Console/NES*.rbf
 }
 
 start() {
         printf "Starting Screensaver: "
         sleepfpga &
-	echo $!>/var/run/nesscreensaver.pid
+        echo $!>/var/run/nesscreensaver.pid
 }
 
 stop() {
         printf "Stopping Screensaver: "
-	kill -9 `nesscreensaver.pid`
-   	rm /var/run/nesscreensaver.pid
+        kill -9 `nesscreensaver.pid`
+        rm /var/run/nesscreensaver.pid
         echo "OK"
 }
 
@@ -84,7 +86,15 @@ sync
 /etc/init.d/S95screensaver start
 
 echo "Screensaver is on and"
-echo "will launch a random game"
-echo "every 5 minutes."
+echo "will launch a random"
+echo "game every 5 minutes."
+echo ""
+echo "If screen stays grey"
+echo "game does not work"
+echo "as bootrom"
+echo ""
+echo "Last game played logged at"
+echo "/Games/NES/lastplayed.log"
+echo ""
 echo "Launching in 5s"
 sleep 5 && nesrandom
