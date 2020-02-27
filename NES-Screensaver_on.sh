@@ -29,7 +29,7 @@ trap "" TERM
 
 sleepfpga()
 {
-    sleep 120
+    sleep 300
     fpga /media/fat/_Console/NES*.rbf
 }
 
