@@ -17,3 +17,5 @@ rm /media/fat/Games/NES/boot1.rom.bak
 echo "Screensaver is off and"
 echo "inactive at startup."
 echo "Done!"
+echo "Rebooting in 5s"
+sleep 5 && reboot
