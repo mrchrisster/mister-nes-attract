@@ -16,8 +16,6 @@ fi
 echo "Backing up Boot Rom"
 cp /media/fat/Games/NES/boot1.rom /media/fat/Games/NES/boot1.rom.bak
 
-NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
-unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
 
 mount | grep "on / .*[(,]ro[,$]" -q && RO_ROOT="true"
 [ "$RO_ROOT" == "true" ] && mount / -o remount,rw
@@ -30,6 +28,8 @@ trap "" TERM
 sleepfpga()
 {
     sleep 300
+    NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
+    unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
     fpga /media/fat/_Console/NES*.rbf
 }
 
