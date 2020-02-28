@@ -1,5 +1,5 @@
 # Mister Rom Screensaver
-This script starts a random NES rom from your collection every 2 Minutes.
+This script starts a random NES rom from your collection every 5 Minutes.
 
 # Usage:
 
