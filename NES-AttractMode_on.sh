@@ -1,10 +1,3 @@
-if [ "$(uname -n)" != "MiSTer" ]
-then
-        echo "This script must be run"
-        echo "on a MiSTer system."
-        exit 1
-fi
-
 if [ ! -f /media/fat/Games/NES/boot1.rom ]
 then
         echo "Error: Aborting.."
