@@ -1,9 +1,4 @@
-if [ "$(uname -n)" != "MiSTer" ]
-then
-        echo "This script must be run"
-        echo "on a MiSTer system."
-        exit 1
-fi
+
 
 mount | grep -q "on / .*[(,]ro[,$]" && RO_ROOT="true"
 [ "$RO_ROOT" == "true" ] && mount / -o remount,rw
