@@ -1,3 +1,4 @@
+  
 if [ ! -f /media/fat/Games/NES/boot1.rom ]
 then
         echo "Error: Aborting.."
@@ -19,62 +20,65 @@ fi
 
 nesrandom()
 {
-    NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
-    unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
+	if compgen -G "/media/fat/Games/NES/@NES*.zip" > /dev/null
+		then
+		NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
+		unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
+	else
+		NESrandomrom=$(find /media/fat/Games/NES/ -name "*.nes" | shuf -n 1)
+		cp "$NESrandomrom" /media/fat/Games/NES/boot1.rom
+	fi
     echo "$NESrandomrom" > /media/fat/Games/NES/lastplayed.log
-    fpga /media/fat/_Console/NES*.rbf
+	fpga /media/fat/_Console/NES*.rbf
 }
 
 mount | grep "on / .*[(,]ro[,$]" -q && RO_ROOT="true"
 [ "$RO_ROOT" == "true" ] && mount / -o remount,rw
 cat <<\EOF > /etc/init.d/_S95screensaver
 #!/bin/sh
-
 trap "" HUP
 trap "" TERM
-
 sleepfpga()
 {
     sleep 300
-    NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
-    unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
-    cat "$NESrandomrom" > /media/fat/Games/NES/lastplayed.log
+	if compgen -G "/media/fat/Games/NES/@NES*.zip" > /dev/null
+		then
+		NESrandomrom=$(unzip -Z1 /media/fat/Games/NES/@NES*.zip | grep ".nes" | shuf -n 1 | sed "s/\[\([^]]*\)\]/\\\[\1\\\]/g")
+		unzip -p /media/fat/Games/NES/@NES*.zip "$NESrandomrom" > /media/fat/Games/NES/boot1.rom
+	else
+		NESrandomrom=$(find /media/fat/Games/NES/ -name "*.nes" | shuf -n 1)
+		cp "$NESrandomrom" /media/fat/Games/NES/boot1.rom
+	fi
+    echo "$NESrandomrom" > /media/fat/Games/NES/lastplayed.log
     fpga /media/fat/_Console/NES*.rbf
 }
-
 start() {
         printf "Starting Screensaver: "
         sleepfpga &
         echo $!>/var/run/nesscreensaver.pid
 }
-
 stop() {
         printf "Stopping Screensaver: "
         kill -9 `nesscreensaver.pid`
         rm /var/run/nesscreensaver.pid
         echo "OK"
 }
-
 case "$1" in
     start)
         start
         ;;
-
     stop)
         stop
         ;;
-
     restart)
         stop
         start
         ;;
-
     *)
         echo "Usage: /etc/init.d/S95screensaver {start|stop|restart}"
         exit 1
         ;;
 esac
-
 exit 0
 EOF
 
