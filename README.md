@@ -1,5 +1,5 @@
 # Mister NES Attract Mode
-This script starts a random NES rom from your collection every 5 Minutes. You can play the game during that time, but it will automatically switch the rom after 5 mins. You also have to turn the script off after usage or else a random NES rom will start after 5 mins.
+This script starts a random NES rom from your collection every 5 Minutes. You can play the game during that time, but it will automatically switch to a new rom after 5 mins no matter if input is received or not. You also have to turn the script off after usage or else a random NES rom will start after 5 mins.
 
 # Usage:
 
